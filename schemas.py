@@ -11,10 +11,8 @@ Model name is converted to lowercase for the collection name:
 - BlogPost -> "blogs" collection
 """
 
-from pydantic import BaseModel, Field
-from typing import Optional
-
-# Example schemas (replace with your own):
+from pydantic import BaseModel, Field, HttpUrl
+from typing import Optional, List
 
 class User(BaseModel):
     """
@@ -29,14 +27,21 @@ class User(BaseModel):
 
 class Product(BaseModel):
     """
-    Products collection schema
+    Padel products collection schema
     Collection name: "product" (lowercase of class name)
     """
-    title: str = Field(..., description="Product title")
+    name: str = Field(..., description="Product name")
+    brand: str = Field(..., description="Brand name")
     description: Optional[str] = Field(None, description="Product description")
-    price: float = Field(..., ge=0, description="Price in dollars")
-    category: str = Field(..., description="Product category")
+    price_aed: float = Field(..., ge=0, description="Price in AED")
+    category: str = Field("racket", description="Product category")
     in_stock: bool = Field(True, description="Whether product is in stock")
+    stock_qty: int = Field(10, ge=0, description="Quantity in stock")
+    images: List[HttpUrl] = Field(default_factory=list, description="Image URLs")
+    weight_grams: Optional[int] = Field(None, ge=300, le=400, description="Weight in grams")
+    balance: Optional[str] = Field(None, description="Head-heavy, Even, or Head-light")
+    surface: Optional[str] = Field(None, description="Carbon, Fiberglass, etc.")
+    featured: bool = Field(False, description="Show as featured on homepage")
 
 # Add your own schemas here:
 # --------------------------------------------------
